@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- سیاست امنیت محتوا: جلوگیری از اجرای اسکریپت‌های تزریقی (XSS) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#f7e9e5" />
+  <meta name="description" content="سیسمونی نی‌نی ماه؛ فروشگاه تخصصی پوشاک نوزاد، تخت و کمد، لوازم بهداشتی، اسباب‌بازی و اکسسوری کودک" />
+  <title>سیسمونی نی‌نی ماه | فروشگاه تخصصی نوزاد و کودک</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/config.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#categories">پرش به محتوای اصلی</a>
+
+  <!-- ============ هدر ============ -->
+  <header id="mainHeader">
+    <div class="container nav-wrapper">
+      <a href="#top" class="brand" aria-label="صفحه اصلی">
+        <span class="logo-box"><img id="siteLogo" src="assets/logo.png" alt="لوگوی فروشگاه" /></span>
+        <span class="brand-title">
+          <strong id="brandName">سیسمونی نی‌نی ماه</strong>
+          <small id="brandSlogan"></small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="منوی اصلی">
+        <a href="#categories">دسته‌بندی محصولات</a>
+        <a href="#about">درباره ما</a>
+        <a href="#contact">تماس با ما</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-dark" type="button" data-action="open-admin" aria-label="ورود مدیر به پنل مدیریت">ورود مدیر</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ هیرو ============ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <span class="hero-badge fx" id="heroBadge"></span>
+          <h2 class="fx"><span id="heroTitle"></span> <em id="heroHighlight"></em></h2>
+          <p class="fx" id="heroText"></p>
+          <form class="search-bar fx" id="searchForm" role="search">
+            <input type="search" id="searchInput" placeholder="جست‌وجوی محصول (مثلاً: سرهمی، کمد، شامپو...)" aria-label="جست‌وجوی محصول" autocomplete="off" />
+            <button class="btn btn-primary" type="submit">جست‌وجو</button>
+          </form>
+        </div>
+        <div class="hero-visual fx">
+          <div class="hero-logo"><img id="heroLogo" src="assets/logo.png" alt="لوگوی فروشگاه" /></div>
+          <p id="heroNote"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ دسته‌بندی و محصولات ============ -->
+    <section id="categories">
+      <div class="container">
+        <div class="section-header">
+          <h3 class="fx">دسته‌بندی‌های فروشگاه</h3>
+          <p class="fx">انتخاب از میان بهترین مدل‌ها با استانداردهای سلامت کودک</p>
+        </div>
+        <div class="category-tabs fx" id="categoryTabs" role="tablist" aria-label="دسته‌بندی محصولات"></div>
+        <div class="products-grid" id="productsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ درباره ما ============ -->
+    <section id="about" class="about-section">
+      <div class="container about-grid">
+        <div>
+          <span class="hero-badge fx">درباره ما</span>
+          <h3 class="about-title fx" id="aboutTitle"></h3>
+          <p class="about-text fx" id="aboutText"></p>
+          <ul class="checks">
+            <li class="fx">تضمین اصالت و سلامت متریال تمامی کالاها</li>
+            <li class="fx">مشاوره تخصصی رایگان برای خرید لیست کامل سیسمونی</li>
+            <li class="fx">بسته‌بندی هدیه و ارسال سریع و مطمئن</li>
+          </ul>
+        </div>
+
+        <div class="slider fx" id="aboutSlider" aria-roledescription="carousel" aria-label="تصاویر فروشگاه">
+          <div class="slides-track" id="slidesTrack"></div>
+          <button class="slider-btn next" type="button" data-action="slide-next" aria-label="اسلاید بعدی">‹</button>
+          <button class="slider-btn prev" type="button" data-action="slide-prev" aria-label="اسلاید قبلی">›</button>
+          <div class="slider-dots" id="sliderDots"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ فوتر ============ -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4 id="footName"></h4>
+          <p>ارائه‌دهنده تخصصی پوشاک نوزاد، سرویس خواب، لوازم بهداشتی و اسباب‌بازی.</p>
+        </div>
+        <div>
+          <h4>دسترسی سریع</h4>
+          <ul class="footer-list">
+            <li><a href="#categories">محصولات</a></li>
+            <li><a href="#about">درباره ما</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>ارتباط با ما</h4>
+          <ul class="footer-list" id="footContact"></ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© تمامی حقوق برای فروشگاه سیسمونی نی‌نی ماه محفوظ است.</span>
+        <a class="creator-credit" href="mailto:Mahdi.fazel.d@gmail.com">ساخته شده توسط: Mahdi.fazel.d@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ مودال مدیریت ============ -->
+  <div class="modal" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle" aria-hidden="true">
+    <div class="modal-card" id="adminCard">
+      <button class="modal-close" type="button" data-action="close-modal" aria-label="بستن">✕</button>
+      <h3 id="adminTitle">🛡️ ناحیه مدیریت</h3>
+      <div class="alert" id="adminMsg" hidden role="alert"></div>
+
+      <!-- نخستین راه‌اندازی -->
+      <div data-view="setup" hidden>
+        <p class="hint">برای نخستین بار، نام کاربری و یک رمز عبور قوی بسازید. رمز هرگز به صورت متن ساده ذخیره نمی‌شود (PBKDF2 + Salt تصادفی).</p>
+        <form id="adminSetupForm" novalidate autocomplete="off">
+          <div class="field"><label for="setupUser">نام کاربری</label><input id="setupUser" type="text" maxlength="30" value="admin" dir="ltr" autocomplete="username" /></div>
+          <div class="field"><label for="setupPass">رمز عبور (حداقل ۱۰ کاراکتر؛ شامل حرف بزرگ، کوچک و عدد)</label><input id="setupPass" type="password" maxlength="128" dir="ltr" autocomplete="new-password" /></div>
+          <div class="field"><label for="setupPass2">تکرار رمز عبور</label><input id="setupPass2" type="password" maxlength="128" dir="ltr" autocomplete="new-password" /></div>
+          <button class="btn btn-primary btn-block" type="submit">ساخت حساب مدیر</button>
+        </form>
+      </div>
+
+      <!-- ورود -->
+      <div data-view="login" hidden>
+        <p class="hint">ورود مدیر با رمزنگاری PBKDF2، قفل خودکار پس از تلاش‌های ناموفق و پایان خودکار نشست.</p>
+        <form id="adminLoginForm" novalidate autocomplete="off">
+          <div class="field"><label for="adminUser">نام کاربری</label><input id="adminUser" type="text" maxlength="30" dir="ltr" autocomplete="username" /></div>
+          <div class="field"><label for="adminPass">رمز عبور</label><input id="adminPass" type="password" maxlength="128" dir="ltr" autocomplete="current-password" /></div>
+          <button class="btn btn-primary btn-block" type="submit" id="adminLoginBtn">ورود به پنل مدیریت</button>
+        </form>
+      </div>
+
+      <!-- داشبورد -->
+      <div data-view="dash" hidden>
+        <div class="dash-head">
+          <span class="hint">مدیریت کامل محتوای سایت بدون نیاز به تغییر کد</span>
+          <button class="btn btn-dark btn-sm" type="button" data-action="admin-logout">خروج امن</button>
+        </div>
+
+        <div class="tabs" role="tablist">
+          <button class="tab active" type="button" data-action="tab" data-tab="products">محصولات</button>
+          <button class="tab" type="button" data-action="tab" data-tab="categories">دسته‌بندی‌ها</button>
+          <button class="tab" type="button" data-action="tab" data-tab="slider">اسلایدر</button>
+          <button class="tab" type="button" data-action="tab" data-tab="settings">تنظیمات و لوگو</button>
+          <button class="tab" type="button" data-action="tab" data-tab="security">امنیت و پشتیبان</button>
+        </div>
+
+        <!-- محصولات -->
+        <div data-panel="products">
+          <form class="card-form" id="productForm" novalidate autocomplete="off">
+            <h4 id="productFormTitle">افزودن محصول</h4>
+            <div class="alert" id="prodMsg" hidden role="alert"></div>
+            <div class="form-grid">
+              <div class="field"><label for="prodName">نام محصول</label><input id="prodName" type="text" maxlength="120" placeholder="مثلاً: ست ۵ تکه نوزادی" /></div>
+              <div class="field"><label for="prodCat">دسته‌بندی</label><select id="prodCat"></select></div>
+              <div class="field"><label for="prodPrice">قیمت (تومان) - خالی = تماس بگیرید</label><input id="prodPrice" type="text" inputmode="numeric" placeholder="850000" dir="ltr" /></div>
+              <div class="field">
+                <label for="prodImgUrl">لینک عکس (https) یا آپلود فایل</label>
+                <input id="prodImgUrl" type="text" placeholder="https://..." dir="ltr" />
+                <input id="prodImgFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+              </div>
+            </div>
+            <div class="field"><label for="prodDesc">توضیح کوتاه</label><input id="prodDesc" type="text" maxlength="300" placeholder="جنس نخ پنبه ۱۰۰٪ ضدحساسیت..." /></div>
+            <div class="preview-row">
+              <img id="prodPreview" class="thumb lg" alt="پیش‌نمایش تصویر محصول" />
+              <button class="btn btn-soft btn-sm" type="button" data-action="prod-clear-img">حذف عکس (استفاده از تصویر پیش‌فرض)</button>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="submit">ذخیره محصول</button>
+              <button class="btn btn-soft" type="button" data-action="prod-cancel" id="prodCancel" hidden>انصراف از ویرایش</button>
+            </div>
+          </form>
+          <h4 class="list-title">لیست محصولات</h4>
+          <div id="adminProducts"></div>
+        </div>
+
+        <!-- دسته‌بندی‌ها -->
+        <div data-panel="categories" hidden>
+          <form class="card-form" id="categoryForm" novalidate autocomplete="off">
+            <h4>افزودن دسته‌بندی</h4>
+            <div class="alert" id="catMsg" hidden role="alert"></div>
+            <div class="inline-form">
+              <input id="newCatIcon" type="text" maxlength="4" placeholder="🧸" aria-label="آیکون (ایموجی)" class="icon-input" />
+              <input id="newCatName" type="text" maxlength="60" placeholder="نام دسته‌بندی جدید..." aria-label="نام دسته‌بندی" />
+              <button class="btn btn-primary" type="submit">افزودن</button>
+            </div>
+          </form>
+          <p class="hint">نام و آیکون را مستقیماً در لیست ویرایش کنید؛ با خروج از کادر، ذخیره می‌شود.</p>
+          <div id="adminCategories"></div>
+        </div>
+
+        <!-- اسلایدر -->
+        <div data-panel="slider" hidden>
+          <form class="card-form" id="slideForm" novalidate autocomplete="off">
+            <h4>افزودن اسلاید به بخش «درباره ما»</h4>
+            <div class="alert" id="slideMsg" hidden role="alert"></div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="slideUrl">لینک عکس (https) یا آپلود فایل</label>
+                <input id="slideUrl" type="text" placeholder="https://..." dir="ltr" />
+                <input id="slideFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+              </div>
+              <div class="field"><label for="slideCaption">متن روی عکس</label><input id="slideCaption" type="text" maxlength="150" placeholder="مثلاً: تنوع بی‌نظیر پوشاک نوزاد" /></div>
+            </div>
+            <div class="preview-row"><img id="slidePreview" class="thumb lg" alt="پیش‌نمایش اسلاید" /></div>
+            <button class="btn btn-primary" type="submit">افزودن اسلاید</button>
+          </form>
+          <h4 class="list-title">اسلایدهای فعلی</h4>
+          <div id="adminSlides"></div>
+        </div>
+
+        <!-- تنظیمات -->
+        <div data-panel="settings" hidden>
+          <form class="card-form" id="settingsForm" novalidate autocomplete="off">
+            <div class="alert" id="setMsg" hidden role="alert"></div>
+            <h4>لوگو</h4>
+            <div class="preview-row">
+              <span class="logo-box"><img id="logoPreview" alt="پیش‌نمایش لوگو" /></span>
+              <div class="field grow">
+                <label for="logoFile">آپلود لوگوی جدید (بدون برش؛ نسبت تصویر حفظ می‌شود)</label>
+                <input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp" />
+              </div>
+              <button class="btn btn-soft btn-sm" type="button" data-action="logo-reset">بازگشت به assets/logo.png</button>
+            </div>
+            <h4>متن‌ها</h4>
+            <div class="form-grid">
+              <div class="field"><label for="set-siteName">نام فروشگاه</label><input id="set-siteName" name="siteName" type="text" maxlength="150" /></div>
+              <div class="field"><label for="set-slogan">شعار زیر نام</label><input id="set-slogan" name="slogan" type="text" maxlength="150" /></div>
+              <div class="field"><label for="set-heroBadge">نشان بالای تیتر</label><input id="set-heroBadge" name="heroBadge" type="text" maxlength="150" /></div>
+              <div class="field"><label for="set-heroNote">متن زیر لوگو در بنر</label><input id="set-heroNote" name="heroNote" type="text" maxlength="150" /></div>
+              <div class="field"><label for="set-heroTitle">تیتر (بخش اول)</label><input id="set-heroTitle" name="heroTitle" type="text" maxlength="150" /></div>
+              <div class="field"><label for="set-heroHighlight">تیتر (بخش رنگی)</label><input id="set-heroHighlight" name="heroHighlight" type="text" maxlength="150" /></div>
+            </div>
+            <div class="field"><label for="set-heroText">توضیح بنر</label><textarea id="set-heroText" name="heroText" rows="2" maxlength="500"></textarea></div>
+            <div class="field"><label for="set-aboutTitle">عنوان «درباره ما»</label><input id="set-aboutTitle" name="aboutTitle" type="text" maxlength="150" /></div>
+            <div class="field"><label for="set-aboutText">متن «درباره ما»</label><textarea id="set-aboutText" name="aboutText" rows="3" maxlength="500"></textarea></div>
+            <h4>اطلاعات تماس (دکمه «استعلام / سفارش» از این‌ها استفاده می‌کند)</h4>
+            <div class="form-grid">
+              <div class="field"><label for="set-phone">تلفن</label><input id="set-phone" name="phone" type="text" maxlength="20" dir="ltr" placeholder="09123456789" /></div>
+              <div class="field"><label for="set-whatsapp">واتساپ (مثلاً 09123456789)</label><input id="set-whatsapp" name="whatsapp" type="text" maxlength="20" dir="ltr" /></div>
+              <div class="field"><label for="set-instagram">آیدی اینستاگرام (بدون @)</label><input id="set-instagram" name="instagram" type="text" maxlength="60" dir="ltr" /></div>
+              <div class="field"><label for="set-telegram">آیدی تلگرام (بدون @)</label><input id="set-telegram" name="telegram" type="text" maxlength="60" dir="ltr" /></div>
+            </div>
+            <div class="field"><label for="set-address">آدرس</label><input id="set-address" name="address" type="text" maxlength="500" /></div>
+            <div class="field"><label for="set-hours">ساعت پاسخگویی</label><input id="set-hours" name="hours" type="text" maxlength="150" /></div>
+            <button class="btn btn-primary" type="submit">ذخیره تنظیمات</button>
+          </form>
+        </div>
+
+        <!-- امنیت -->
+        <div data-panel="security" hidden>
+          <form class="card-form" id="passwordForm" novalidate autocomplete="off">
+            <h4>تغییر رمز عبور</h4>
+            <div class="alert" id="pwMsg" hidden role="alert"></div>
+            <div class="form-grid">
+              <div class="field"><label for="pwCurrent">رمز فعلی</label><input id="pwCurrent" type="password" maxlength="128" dir="ltr" autocomplete="current-password" /></div>
+              <div class="field"><label for="pwNew">رمز جدید (حداقل ۱۰ کاراکتر؛ حرف بزرگ، کوچک و عدد)</label><input id="pwNew" type="password" maxlength="128" dir="ltr" autocomplete="new-password" /></div>
+            </div>
+            <button class="btn btn-primary" type="submit">به‌روزرسانی رمز</button>
+          </form>
+
+          <div class="card-form">
+            <h4>پشتیبان‌گیری</h4>
+            <div class="alert" id="bkMsg" hidden role="alert"></div>
+            <p class="hint">پشتیبان JSON شامل محصولات، دسته‌بندی‌ها، اسلایدر و تنظیمات است (رمز عبور در آن نیست). فایل ورودی پیش از ذخیره کاملاً پاک‌سازی و اعتبارسنجی می‌شود.</p>
+            <div class="btn-row">
+              <button class="btn btn-soft" type="button" data-action="export">دانلود پشتیبان</button>
+              <label class="btn btn-soft file-btn">بازیابی از فایل<input id="importFile" type="file" accept="application/json,.json" /></label>
+              <button class="btn btn-danger" type="button" data-action="reset-site">بازگردانی به حالت اولیه</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>
