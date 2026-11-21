@@ -1,4 +1,3 @@
-
 /* ==========================================================
    سیسمونی نی‌نی ماه - منطق اصلی سایت
    - بدون هیچ inline-script (سازگار با CSP)
@@ -15,11 +14,14 @@
   }
 
   const CFG = Object.assign({
+    DEMO_OTP: true, OTP_TTL_SEC: 120, OTP_RESEND_SEC: 60, OTP_MAX_TRIES: 3,
     ADMIN_SESSION_MIN: 20, PBKDF2_ITER: 210000
   }, window.NINIMAH_CONFIG || {});
 
   const KEYS = {
     data: 'ninimah:data:v2',
+    users: 'ninimah:users:v2',
+    user: 'ninimah:user:v2',
     admin: 'ninimah:admin:v2',
     lock: 'ninimah:admin-lock:v2',
     session: 'ninimah:admin-session:v2'
@@ -296,9 +298,15 @@
     return p.img || placeholder(c ? c.icon : '🍼', p.name.slice(0, 26), catHue(p.cat));
   }
 
+  function currentUser() {
+    const u = store.get(KEYS.user, null);
+    return u && typeof u.name === 'string' && /^09\d{9}$/.test(u.phone || '') ? u : null;
+  }
+
   function contactHref(p) {
     const s = data.settings;
-    const msg = `سلام، درباره «${p.name}» می‌خواستم اطلاعات بگیرم.`;
+    const user = currentUser();
+    const msg = `سلام، درباره «${p.name}» می‌خواستم اطلاعات بگیرم.${user ? ` (${user.name})` : ''}`;
     if (s.whatsapp) return `https://wa.me/${s.whatsapp}?text=${encodeURIComponent(msg)}`;
     if (s.phone) return `tel:${s.phone.replace(/[^\d+]/g, '')}`;
     return '';
@@ -423,6 +431,7 @@
     renderTabs();
     renderProducts();
     renderSlider();
+    updateUserButton();
   }
 
   /* ---------------------------------------------------------
@@ -452,6 +461,10 @@
      --------------------------------------------------------- */
   const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
   const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function sha256Hex(s) {
+    const b = await crypto.subtle.digest('SHA-256', enc.encode(s));
+    return Array.from(new Uint8Array(b), x => x.toString(16).padStart(2, '0')).join('');
+  }
   async function derive(pass, salt, iterations) {
     const key = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveBits']);
     return new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations }, key, 256));
@@ -462,11 +475,86 @@
     for (let i = 0; i < a.length; i++) r |= a[i] ^ b[i];
     return r === 0;
   }
+  function randomCode(n) {
+    const a = new Uint32Array(n);
+    crypto.getRandomValues(a);
+    return Array.from(a, x => x % 10).join('');
+  }
   function passwordProblem(pass, user) {
     if (pass.length < 10) return 'رمز عبور باید حداقل ۱۰ کاراکتر باشد.';
     if (!/[a-z]/.test(pass) || !/[A-Z]/.test(pass) || !/\d/.test(pass)) return 'رمز باید شامل حرف کوچک، حرف بزرگ و عدد انگلیسی باشد.';
     if (user && pass.toLowerCase().includes(user.toLowerCase())) return 'رمز عبور نباید شامل نام کاربری باشد.';
     return '';
+  }
+
+  /* ---------------------------------------------------------
+     ورود / ثبت‌نام مشتری (OTP)
+     --------------------------------------------------------- */
+  let otp = null;
+
+  function updateUserButton() {
+    const u = currentUser();
+    $('#userBtn').textContent = u ? `سلام، ${u.name.slice(0, 14)}` : 'ورود / ثبت‌نام';
+  }
+  function openUser() {
+    const u = currentUser();
+    setMsg('userMsg', '');
+    if (u) {
+      $('#accName').textContent = u.name;
+      $('#accPhone').textContent = u.phone;
+      setView('userModal', 'account');
+    } else {
+      setView('userModal', otp ? 'otp' : 'phone');
+    }
+    openModal('userModal');
+  }
+  async function sendOtp() {
+    if (!hasCrypto) return setMsg('userMsg', 'این قابلیت فقط روی https یا localhost کار می‌کند.', 'danger');
+    const phone = toEn($('#userPhone').value.trim());
+    const name = str($('#userName').value, 60);
+    if (!/^09\d{9}$/.test(phone)) return setMsg('userMsg', 'شماره موبایل معتبر ۱۱ رقمی (با 09) وارد کنید.', 'danger');
+    const users = store.get(KEYS.users, []);
+    const known = Array.isArray(users) && users.find(u => u && u.phone === phone);
+    if (!known && !name) return setMsg('userMsg', 'برای ثبت‌نام جدید، نام و نام خانوادگی را وارد کنید.', 'danger');
+    if (otp && otp.phone === phone && Date.now() - otp.sent < CFG.OTP_RESEND_SEC * 1000) {
+      const left = Math.ceil((CFG.OTP_RESEND_SEC * 1000 - (Date.now() - otp.sent)) / 1000);
+      return setMsg('userMsg', `لطفاً ${left.toLocaleString('fa-IR')} ثانیه دیگر دوباره تلاش کنید.`, 'danger');
+    }
+    if (!CFG.DEMO_OTP) return setMsg('userMsg', 'سرویس ارسال پیامک هنوز متصل نشده است.', 'danger');
+    const code = randomCode(5);
+    otp = { phone, name: name || (known && known.name) || 'کاربر گرامی', hash: await sha256Hex(`${phone}:${code}`), exp: Date.now() + CFG.OTP_TTL_SEC * 1000, tries: 0, sent: Date.now() };
+    $('#otpInput').value = '';
+    setView('userModal', 'otp');
+    setMsg('userMsg', `حالت آزمایشی: پیامکی ارسال نشد. کد تایید شما ${code} است.`, 'info');
+    $('#otpInput').focus();
+  }
+  async function verifyOtp() {
+    if (!otp) { setView('userModal', 'phone'); return; }
+    if (Date.now() > otp.exp) { otp = null; setView('userModal', 'phone'); return setMsg('userMsg', 'کد منقضی شد. دوباره درخواست دهید.', 'danger'); }
+    const input = toEn($('#otpInput').value.trim());
+    const ok = (await sha256Hex(`${otp.phone}:${input}`)) === otp.hash;
+    if (!ok) {
+      otp.tries++;
+      if (otp.tries >= CFG.OTP_MAX_TRIES) { otp = null; setView('userModal', 'phone'); return setMsg('userMsg', 'تعداد تلاش‌ها بیش از حد مجاز بود. کد جدید بگیرید.', 'danger'); }
+      return setMsg('userMsg', `کد نادرست است (${otp.tries.toLocaleString('fa-IR')} از ${CFG.OTP_MAX_TRIES.toLocaleString('fa-IR')}).`, 'danger');
+    }
+    const user = { name: otp.name, phone: otp.phone };
+    const users = store.get(KEYS.users, []);
+    const list = Array.isArray(users) ? users : [];
+    if (!list.some(u => u && u.phone === user.phone)) { list.push({ ...user, at: Date.now() }); store.set(KEYS.users, list.slice(-500)); }
+    store.set(KEYS.user, user);
+    otp = null;
+    closeModal('userModal');
+    toast(`خوش آمدید ${user.name}! ورود با موفقیت انجام شد.`, 'success');
+    updateUserButton();
+    renderProducts();
+  }
+  function userLogout() {
+    store.del(KEYS.user);
+    closeModal('userModal');
+    updateUserButton();
+    renderProducts();
+    toast('از حساب خود خارج شدید.');
   }
 
   /* ---------------------------------------------------------
@@ -799,8 +887,11 @@
     if (t) {
       const d = t.dataset;
       switch (d.action) {
+        case 'open-user': openUser(); break;
         case 'open-admin': openAdmin(); break;
         case 'close-modal': { const m = t.closest('.modal'); if (m) closeModal(m.id); break; }
+        case 'user-logout': userLogout(); break;
+        case 'otp-back': otp = null; setMsg('userMsg', ''); setView('userModal', 'phone'); break;
         case 'cat': activeCat = d.cat; renderTabs(); renderProducts(); break;
         case 'no-contact': toast('اطلاعات تماس هنوز در تنظیمات فروشگاه ثبت نشده است.'); break;
         case 'slide-next': moveSlide(1); break;
@@ -832,6 +923,8 @@
     e.preventDefault();
     switch (e.target.id) {
       case 'searchForm': renderProducts(); break;
+      case 'userPhoneForm': sendOtp(); break;
+      case 'userOtpForm': verifyOtp(); break;
       case 'adminSetupForm': adminSetup(); break;
       case 'adminLoginForm': adminLogin(); break;
       case 'productForm': saveProduct(); break;
