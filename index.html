@@ -6,7 +6,7 @@
   <!-- سیاست امنیت محتوا: جلوگیری از اجرای اسکریپت‌های تزریقی (XSS) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="theme-color" content="#f7e9e5" />
+  <meta name="theme-color" content="#1a8cff" />
   <meta name="description" content="سیسمونی نی‌نی ماه؛ فروشگاه تخصصی پوشاک نوزاد، تخت و کمد، لوازم بهداشتی، اسباب‌بازی و اکسسوری کودک" />
   <title>سیسمونی نی‌نی ماه | فروشگاه تخصصی نوزاد و کودک</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
@@ -38,7 +38,8 @@
       </nav>
 
       <div class="header-actions">
-        <button class="btn btn-dark" type="button" data-action="open-admin" aria-label="ورود مدیر به پنل مدیریت">ورود مدیر</button>
+        <button class="btn btn-soft" id="userBtn" type="button" data-action="open-user">ورود / ثبت‌نام</button>
+        <button class="btn btn-dark" type="button" data-action="open-admin">مدیریت</button>
       </div>
     </div>
   </header>
@@ -112,6 +113,7 @@
           <ul class="footer-list">
             <li><a href="#categories">محصولات</a></li>
             <li><a href="#about">درباره ما</a></li>
+            <li><button class="link-btn" type="button" data-action="open-user">حساب کاربری</button></li>
           </ul>
         </div>
         <div>
@@ -126,6 +128,50 @@
       </div>
     </div>
   </footer>
+
+  <!-- ============ مودال ورود / ثبت‌نام مشتری ============ -->
+  <div class="modal" id="userModal" role="dialog" aria-modal="true" aria-labelledby="userTitle" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-action="close-modal" aria-label="بستن">✕</button>
+      <h3 id="userTitle">ورود / ثبت‌نام مشتریان</h3>
+      <div class="alert" id="userMsg" hidden role="alert"></div>
+
+      <div data-view="phone">
+        <p class="hint">شماره موبایل خود را وارد کنید تا کد تایید برایتان ارسال شود.</p>
+        <form id="userPhoneForm" novalidate autocomplete="off">
+          <div class="field">
+            <label for="userName">نام و نام خانوادگی (برای ثبت‌نام جدید)</label>
+            <input id="userName" type="text" maxlength="60" placeholder="مثلاً: سارا محمدی" />
+          </div>
+          <div class="field">
+            <label for="userPhone">شماره موبایل</label>
+            <input id="userPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="09123456789" dir="ltr" />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">ارسال کد تایید</button>
+        </form>
+      </div>
+
+      <div data-view="otp" hidden>
+        <form id="userOtpForm" novalidate autocomplete="off">
+          <div class="field">
+            <label for="otpInput">کد تایید ارسال‌شده را وارد کنید</label>
+            <input id="otpInput" class="otp-input" type="text" inputmode="numeric" maxlength="5" placeholder="•••••" dir="ltr" autocomplete="one-time-code" />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">تایید و ورود</button>
+          <button class="btn btn-soft btn-block mt" type="button" data-action="otp-back">تغییر شماره موبایل</button>
+        </form>
+      </div>
+
+      <div data-view="account" hidden>
+        <div class="account-box">
+          <div class="avatar" aria-hidden="true">👶</div>
+          <strong id="accName"></strong>
+          <span id="accPhone" dir="ltr"></span>
+        </div>
+        <button class="btn btn-soft btn-block" type="button" data-action="user-logout">خروج از حساب</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============ مودال مدیریت ============ -->
   <div class="modal" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle" aria-hidden="true">
