@@ -129,50 +129,7 @@
     </div>
   </footer>
 
-  <!-- ============ مودال ورود / ثبت‌نام مشتری ============ -->
-  <div class="modal" id="userModal" role="dialog" aria-modal="true" aria-labelledby="userTitle" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" type="button" data-action="close-modal" aria-label="بستن">✕</button>
-      <h3 id="userTitle">ورود / ثبت‌نام مشتریان</h3>
-      <div class="alert" id="userMsg" hidden role="alert"></div>
-
-      <div data-view="phone">
-        <p class="hint">شماره موبایل خود را وارد کنید تا کد تایید برایتان ارسال شود.</p>
-        <form id="userPhoneForm" novalidate autocomplete="off">
-          <div class="field">
-            <label for="userName">نام و نام خانوادگی (برای ثبت‌نام جدید)</label>
-            <input id="userName" type="text" maxlength="60" placeholder="مثلاً: سارا محمدی" />
-          </div>
-          <div class="field">
-            <label for="userPhone">شماره موبایل</label>
-            <input id="userPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="09123456789" dir="ltr" />
-          </div>
-          <button class="btn btn-primary btn-block" type="submit">ارسال کد تایید</button>
-        </form>
-      </div>
-
-      <div data-view="otp" hidden>
-        <form id="userOtpForm" novalidate autocomplete="off">
-          <div class="field">
-            <label for="otpInput">کد تایید ارسال‌شده را وارد کنید</label>
-            <input id="otpInput" class="otp-input" type="text" inputmode="numeric" maxlength="5" placeholder="•••••" dir="ltr" autocomplete="one-time-code" />
-          </div>
-          <button class="btn btn-primary btn-block" type="submit">تایید و ورود</button>
-          <button class="btn btn-soft btn-block mt" type="button" data-action="otp-back">تغییر شماره موبایل</button>
-        </form>
-      </div>
-
-      <div data-view="account" hidden>
-        <div class="account-box">
-          <div class="avatar" aria-hidden="true">👶</div>
-          <strong id="accName"></strong>
-          <span id="accPhone" dir="ltr"></span>
-        </div>
-        <button class="btn btn-soft btn-block" type="button" data-action="user-logout">خروج از حساب</button>
-      </div>
-    </div>
-  </div>
-
+ 
   <!-- ============ مودال مدیریت ============ -->
   <div class="modal" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle" aria-hidden="true">
     <div class="modal-card" id="adminCard">
@@ -184,7 +141,7 @@
       <div data-view="setup" hidden>
         <p class="hint">برای نخستین بار، نام کاربری و یک رمز عبور قوی بسازید. رمز هرگز به صورت متن ساده ذخیره نمی‌شود (PBKDF2 + Salt تصادفی).</p>
         <form id="adminSetupForm" novalidate autocomplete="off">
-          <div class="field"><label for="setupUser">نام کاربری</label><input id="setupUser" type="text" maxlength="30" value="admin" dir="ltr" autocomplete="username" /></div>
+          <div class="field"><label for="setupUser">نام کاربری</label><input id="setupUser" type="text" maxlength="30" value="M@hdi.f_dd" dir="ltr" autocomplete="username" /></div>
           <div class="field"><label for="setupPass">رمز عبور (حداقل ۱۰ کاراکتر؛ شامل حرف بزرگ، کوچک و عدد)</label><input id="setupPass" type="password" maxlength="128" dir="ltr" autocomplete="new-password" /></div>
           <div class="field"><label for="setupPass2">تکرار رمز عبور</label><input id="setupPass2" type="password" maxlength="128" dir="ltr" autocomplete="new-password" /></div>
           <button class="btn btn-primary btn-block" type="submit">ساخت حساب مدیر</button>
